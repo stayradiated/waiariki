@@ -18,10 +18,12 @@ public class Employees {
     this.employees = new ArrayList<Employee>();
   }
 
-  public void add (Employee employee) {
-    employee.setId(nextId++);
+  public int add (Employee employee) {
+    int id = nextId++;
+    employee.setId(id);
     this.employees.add(employee);
     this.length = this.employees.size();
+    return id;
   }
 
   public boolean write () {

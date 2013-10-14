@@ -54,14 +54,17 @@ public class TUI {
 
     switch (selection) {
       case 1: // Add employee
-        this.print("Enter name: ");
-        String name = this.scanner.nextLine();
-        this.print("Enter gender (m/f): ");
-        char gender = this.scanner.nextLine().charAt(0);
-        this.print("Enter age in years: ");
-        int age = this.scanner.nextInt();
-        this.print("Number of jobs assigned: ");
-        int duties = this.scanner.nextInt();
+        Employee employee = new Employee();
+
+        Questions questions = new Questions(new Question[] {
+          new Question("Enter name:", "String"),
+          new Question("Enter gender (m/f):", "char"),
+          new Question("Enter age in years:", "int"),
+          new Question("Number of jobs assigned:", "int"),
+        }, this.scanner);
+
+        questions.ask();
+
         break;
 
       case 2: // Delete an employee
@@ -87,8 +90,9 @@ public class TUI {
     return option;
   }
 
-  public void print (String string) {
+  private void print (String string) {
     System.out.print(string);
   }
+
 
 }
