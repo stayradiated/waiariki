@@ -80,6 +80,8 @@ public class Table {
 
     out += line;
 
+    System.out.print(out);
+
     return out;
 
   }
