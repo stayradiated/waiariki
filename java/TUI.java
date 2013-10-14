@@ -1,22 +1,38 @@
+/**
+ * The Textual User Interface (TUI) handles the input and output of the system.
+ * This includes displaying menus, and lists as well as listening to user input.
+ */
+
+import java.util.Scanner;
 
 public class TUI {
+
+  private Scanner scanner;
+  private Employees employees;
+
+  private final String MESSAGE_WELCOME = "Welcome to the ABC Company Employee System\n\n";
+  private final String MESSAGE_NUMBER = "Number of employees in system: ";
+  private final String MESSAGE_PROMPT = "Select Option: ";
+  private final String NL = "\n";
 
   public static void main (String[] args) {
     new TUI();
   }
 
-  public TUI () {
+  private TUI () {
+    this.scanner = new Scanner(System.in);
+    this.employees = new Employees();
     this.menu();
   }
 
-  public void menu () {
+  private void menu () {
 
-    TableColumn[] columns = {
+    final TableColumn[] columns = {
       new TableColumn("#", 1),
       new TableColumn("MAIN MENU", 60)
     };
 
-    String[][] rows = {
+    final String[][] rows = {
       new String[] { "1", "Add employee" },
       new String[] { "2", "Delete an employee" },
       new String[] { "3", "Modify an employee record" },
@@ -28,10 +44,51 @@ public class TUI {
       new String[] { "9", "Exit" }
     };
 
-    Table table = new Table(columns, rows);
+    final Table table = new Table(columns, rows);
+
+    this.print(MESSAGE_WELCOME);
+    this.numberOfEmployees();
     table.print();
 
+    int selection = this.readInt();
 
+    switch (selection) {
+      case 1: // Add employee
+        this.print("Enter name: ");
+        String name = this.scanner.nextLine();
+        this.print("Enter gender (m/f): ");
+        char gender = this.scanner.nextLine().charAt(0);
+        this.print("Enter age in years: ");
+        int age = this.scanner.nextInt();
+        this.print("Number of jobs assigned: ");
+        int duties = this.scanner.nextInt();
+        break;
+
+      case 2: // Delete an employee
+        break;
+
+    }
+
+  }
+
+  private void numberOfEmployees () {
+    this.print(MESSAGE_NUMBER + employees.length + NL);
+  }
+
+  private int readInt () {
+    this.print(MESSAGE_PROMPT);
+    System.out.flush();
+    while (! this.scanner.hasNextInt()) {
+      this.scanner.nextLine();
+      this.print(MESSAGE_PROMPT);
+      System.out.flush();
+    }
+    int option = this.scanner.nextInt();
+    return option;
+  }
+
+  public void print (String string) {
+    System.out.print(string);
   }
 
 }
