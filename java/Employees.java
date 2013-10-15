@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.io.File;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.PrintWriter;
@@ -46,14 +47,19 @@ public class Employees {
    */
 
   public int add (Employee employee) {
-    int id = nextId++;
-    employee.setId(id);
+    int id = employee.getId();
+    if (id == -1) {
+      id = this.nextId++;
+      employee.setId(id);
+    } else {
+      this.nextId = id + 1;
+    }
     this.employees.add(employee);
     this.length = this.employees.size();
     return id;
   }
 
-  
+
   /**
    * Check if an employee with id exists
    * @param id
@@ -85,8 +91,8 @@ public class Employees {
     }
     throw new IndexOutOfBoundsException();
   }
-  
-  
+
+
   /**
    * Get an employee by index
    * @param index
@@ -103,11 +109,9 @@ public class Employees {
    */
 
   public void remove (int id) {
-    Iterator<Employee> it = this.employees.iterator();
-    while (it.hasNext()) {
-      Employee employee = it.next();
+    for (Employee employee : this.employees) {
       if (employee.getId() == id) {
-        it.remove();
+        this.employees.remove(employee);
       }
     }
   }
@@ -164,6 +168,14 @@ public class Employees {
     }
   }
 
+  /**
+   * Check if file exists
+   */
+
+  public boolean fileExists () {
+    return new File(FILENAME).exists();
+  }
+
 
   /**
    * Check if records are full
@@ -209,10 +221,10 @@ public class Employees {
     string += employee.getName()   + ",";
     string += employee.getGender() + ",";
     string += employee.getAge()    + ",";
-    string += employee.getDuties() + "\n";
+    string += employee.getDuties();
     return string;
   }
-  
+
 
   /**
    * Convert string into an employee
@@ -222,11 +234,17 @@ public class Employees {
   private Employee parse (String string) {
     String[] parts = string.split(",");
     Employee employee = new Employee();
+
+    if (parts.length < 5) {
+      throw new UnsupportedOperationException();
+    }
+
     employee.setId(     Integer.parseInt(parts[0]) );
-    employee.setName(   parts[1]           );
-    employee.setGender( parts[2].charAt(0) );
-    employee.setAge(    Integer.parseInt(parts[2]) );
-    employee.setDuties( Integer.parseInt(parts[2]) );
+    employee.setName(   parts[1]                   );
+    employee.setGender( parts[2].charAt(0)         );
+    employee.setAge(    Integer.parseInt(parts[3]) );
+    employee.setDuties( Integer.parseInt(parts[4]) );
+
     return employee;
   }
 

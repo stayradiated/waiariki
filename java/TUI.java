@@ -31,10 +31,12 @@ public class TUI {
   }
 
   private TUI () {
-    /* this.scanner = new Scanner(System.in); */
+    this.scanner = new Scanner(System.in);
     this.employees = new Employees();
-    this.employees.read();
-    /* this.menu(); */
+    if (this.employees.fileExists()) {
+      this.employees.read();
+    }
+    this.menu();
   }
 
   private void menu () {
@@ -88,7 +90,7 @@ public class TUI {
     this.menu();
 
   }
-  
+
   /**
    * 1. Add Employee
    */
@@ -112,17 +114,17 @@ public class TUI {
 
     Object[] answers = questions.ask();
 
-    employee.setName(    (String) answers[0]);
-    employee.setGender(  (char)   answers[1]);
-    employee.setAge(     (int)    answers[2]);
-    employee.setDuties(  (int)    answers[3]);
+    employee.setName(   (String)    answers[0] );
+    employee.setGender( (Character) answers[1] );
+    employee.setAge(    (Integer)   answers[2] );
+    employee.setDuties( (Integer)   answers[3] );
 
     int id = this.employees.add(employee);
     this.print("\nEmployee ID is " + id + "\n");
 
   }
 
-  
+
   /**
    * 2. Delete an employee
    */
@@ -212,7 +214,7 @@ public class TUI {
     this.print(NL);
     return option;
   }
-  
+
   /**
    * Wait for the user to press enter
    */

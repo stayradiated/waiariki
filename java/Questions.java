@@ -24,18 +24,20 @@ public class Questions {
   private Object askQuestion (Question question) {
     Object input = null;
     String text = question.getText();
+    String type = question.getType();
+
     this.print(text);
-    switch (question.getType()) {
-      case "String":
-        input = this.scanner.nextLine();
-        break;
-      case "int":
-        input = this.scanner.nextInt();
-        break;
-      case "char":
-        input = this.scanner.nextLine().charAt(0);
-        break;
+
+    if (type.equals("String")) {
+      input = this.scanner.nextLine();
     }
+    else if (type.equals("int")) {
+      input = this.scanner.nextInt();
+    }
+    else if (type.equals("char")) {
+      input = this.scanner.nextLine().charAt(0);
+    }
+
     return input;
   }
 

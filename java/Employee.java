@@ -8,9 +8,9 @@ public class Employee {
   private String name;
 
   public Employee () {
-    id     = 0;
-    age    = 0;
-    duties = 0;
+    id     = -1;
+    age    = -1;
+    duties = -1;
     gender = 'M';
     name   = "";
   }
