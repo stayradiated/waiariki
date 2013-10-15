@@ -79,6 +79,22 @@ public class TUI {
         this.listAll();
         break;
 
+      case 5: // View single emplyoee
+        this.listSingle();
+        break;
+
+      case 6: // View age group
+        this.listAgeGroup();
+        break;
+
+      case 7: // Most duties
+        this.showMostDuties();
+        break;
+
+      case 8: // No duties
+        this.showNoDuties();
+        break;
+
       case 9: // Delete an employee
         this.exit();
         break;
@@ -153,6 +169,60 @@ public class TUI {
     Table table = new Table(TABLE_EMPLOYEE, this.employees.asRows());
     table.print();
     this.numberOfEmployees();
+  }
+
+  /**
+   * 5. View single employee details
+   */
+
+  private void listSingle () {
+    int id = this.readInt("Enter ID: ");
+
+    if (this.employees.has(id)) {
+      this.printEmployeeDetails(this.employees.get(id));
+    } else {
+      this.print("Could not find an employee with that ID." + NL + NL);
+    }
+
+    this.print("Would you like to view another employee? (Y/n): ");
+    this.scanner.skip(NL);
+
+    // Default is to loop
+    if (! this.scanner.nextLine().equals("n")) {
+      this.print(NL);
+      this.listSingle();
+    }
+
+  }
+
+  /**
+   * 6. View employees in an age group
+   */
+
+  public void listAgeGroup () {
+    Employees list = this.employees.inAgeGroup(25, 35);
+    Table table = new Table(TABLE_EMPLOYEE, list.asRows());
+    table.print();
+  }
+
+  /**
+   * 7. Highest jobs assigned
+   */
+
+  public void showMostDuties () {
+    Employee employee = this.employees.withMostDuties();
+    this.printEmployeeDetails(employee);
+  }
+
+  /**
+   * 8. No jobs assigned
+   */
+
+  public void showNoDuties () {
+    Employees list = this.employees.withNoDuties();
+    Table table = new Table(TABLE_EMPLOYEE, list.asRows());
+    table.print();
+    this.print("\nThere are " + list.length + " employees with no jobs assigned.\n");
   }
 
 

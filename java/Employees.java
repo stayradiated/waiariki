@@ -67,8 +67,9 @@ public class Employees {
    */
 
   public boolean has (int id) {
-    for (Employee employee : this.employees) {
-      System.out.println(employee.getId());
+    Employee employee;
+    for (int i = 0; i < this.length; i++) {
+      employee = this.employees.get(i);
       if (employee.getId() == id) {
         return true;
       }
@@ -84,7 +85,9 @@ public class Employees {
    */
 
   public Employee get (int id) {
-    for (Employee employee : this.employees) {
+    Employee employee;
+    for (int i = 0; i < this.length; i++) {
+      employee = this.employees.get(i);
       if (employee.getId() == id) {
         return employee;
       }
@@ -109,11 +112,74 @@ public class Employees {
    */
 
   public void remove (int id) {
-    for (Employee employee : this.employees) {
-      if (employee.getId() == id) {
-        this.employees.remove(employee);
+    for (int i = 0; i < this.length; i++) {
+      if (this.employees.get(i).getId() == id) {
+        this.employees.remove(i);
       }
     }
+    this.length = this.employees.size();
+  }
+
+
+  /**
+   * Retrieve a list of all the Employees in a certain age group
+   * @param min - minimum age (inclusive)
+   * @param max - maximum age (inclusive)
+   * @return new Employees
+   */
+
+  public Employees inAgeGroup (int min, int max) {
+    Employees list = new Employees();
+    Employee employee;
+    int age;
+
+    for (int i = 0; i < this.length; i++) {
+      employee = this.employees.get(i);
+      age = employee.getAge();
+      if (age >= min && age <= max) {
+        list.add(employee);
+      }
+    }
+
+    return list;
+  }
+
+
+  /**
+   * Get the employee with the most jobs
+   */
+
+  public Employee withMostDuties () {
+    Employee employee = null;
+    int max = 0;
+    for (int i = 0; i < this.length; i++) {
+      if (this.employees.get(i).getDuties() > max) {
+        employee = this.employees.get(i);
+        max = employee.getDuties();
+      }
+    }
+    return employee;
+  }
+
+
+  /**
+   * Get a list of the employees with no duties
+   */
+
+  public Employees withNoDuties () {
+    Employees list = new Employees();
+    Employee employee;
+    int duties;
+
+    for (int i = 0; i < this.length; i++) {
+      employee = this.employees.get(i);
+      duties = employee.getDuties();
+      if (duties == 0) {
+        list.add(employee);
+      }
+    }
+
+    return list;
   }
 
 
@@ -137,8 +203,10 @@ public class Employees {
     }
 
     // Loop through the ArrayList of employees
-    for (Employee employee : this.employees) {
+    Employee employee;
+    for (int i = 0; i < this.length; i++) {
       // Write each employee to the file
+      employee = this.employees.get(i);
       writer.println(this.stringify(employee));
     }
 
@@ -176,7 +244,6 @@ public class Employees {
     return new File(FILENAME).exists();
   }
 
-
   /**
    * Check if records are full
    */
@@ -192,9 +259,8 @@ public class Employees {
 
   public String[][] asRows () {
     String[][] rows = new String[this.length][5];
-    int i = 0;
-    for (Employee employee : this.employees) {
-      rows[i++] = employee.asRow();
+    for (int i = 0; i < this.length; i++) {
+      rows[i] = this.employees.get(i).asRow();
     }
     return rows;
   }
