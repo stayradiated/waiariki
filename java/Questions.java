@@ -12,17 +12,31 @@ public class Questions {
     this.calculateMaxLength();
   }
 
-  public void ask () {
+  public Object[] ask () {
+    Object[] answers = new Object[this.questions.length];
     this.scanner.skip("\n");
     for (int i = 0; i < this.questions.length; i++) {
-      this.askQuestion(this.questions[i]);
+      answers[i] = this.askQuestion(this.questions[i]);
     }
+    return answers;
   }
 
   private Object askQuestion (Question question) {
+    Object input = null;
     String text = question.getText();
     this.print(text);
-    return this.scanner.nextLine();
+    switch (question.getType()) {
+      case "String":
+        input = this.scanner.nextLine();
+        break;
+      case "int":
+        input = this.scanner.nextInt();
+        break;
+      case "char":
+        input = this.scanner.nextLine().charAt(0);
+        break;
+    }
+    return input;
   }
 
   private int calculateMaxLength () {

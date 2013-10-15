@@ -70,9 +70,7 @@ public class Table {
     for (int i = 0; i < this.rows.length; i++) {
       out += V_SEP + PAD;
       for (int j = 0; j < this.rows[i].length; j++) {
-        out += BOLD;
         out += String.format("%-" + columns[j].getWidth() + "s", this.rows[i][j]);
-        out += RESET;
         out += PAD + V_SEP + PAD;
       }
       out += NL;

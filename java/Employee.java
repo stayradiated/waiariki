@@ -25,6 +25,21 @@ public class Employee {
   }
 
   /**
+   * Convert the employee into a table row
+   */
+
+  public String[] asRow () {
+    // TODO: Is there a better way to convert an int to a String?
+    return new String[] {
+      id     + "",
+      name,
+      gender + "",
+      age    + "",
+      duties + ""
+    };
+  }
+
+  /**
    * Get id
    * @return id
    */
