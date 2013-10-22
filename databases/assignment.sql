@@ -7,8 +7,10 @@ CREATE TABLE `Location` (
 CREATE TABLE `Employer` (
   `ID`         INT(8)      NOT NULL  AUTO_INCREMENT,
   `Name`       VARCHAR(30) NOT NULL,
-  `EmployerID` INT(8)      NOT NULL,
-  PRIMARY KEY (`ID`)
+  `LocationID` INT(8)      NOT NULL,
+  PRIMARY KEY (`ID`),
+  CONSTRAINT fk_Employer_LocationID FOREIGN KEY (`LocationID`)
+  REFERENCES Location(`ID`) ON DELETE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1;
 
 CREATE TABLE `Vacancy` (
@@ -18,7 +20,11 @@ CREATE TABLE `Vacancy` (
   `LocationID`  INT(8)       NOT NULL,
   `DateCreated` TIMESTAMP    NOT NULL  DEFAULT CURRENT_TIMESTAMP,
   `Type`        BOOLEAN      NOT NULL,
-  PRIMARY KEY (`ID`)
+  PRIMARY KEY (`ID`),
+  CONSTRAINT fk_Vacancy_EmployerID FOREIGN KEY (`EmployerID`)
+  REFERENCES Employer(`ID`) ON DELETE NO ACTION,
+  CONSTRAINT fk_Vacancy_LocationID FOREIGN KEY (`LocationID`)
+  REFERENCES Location(`ID`) ON DELETE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1;
 
 CREATE TABLE `Student` (
@@ -34,26 +40,35 @@ CREATE TABLE `Applicant` (
   `StudentID`   INT(8)    NOT NULL,
   `VacancyID`   INT(8)    NOT NULL,
   `DateCreated` TIMESTAMP NOT NULL  DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`StudentID`),
-  PRIMARY KEY (`VacancyID`)
+  PRIMARY KEY (`StudentID`, `VacancyID`),
+  CONSTRAINT fk_Applicant_StudentID FOREIGN KEY (`StudentID`)
+  REFERENCES Student(`ID`) ON DELETE CASCADE,
+  CONSTRAINT fk_Applicant_VacancyID FOREIGN KEY (`VacancyID`)
+  REFERENCES Vacancy(`ID`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 CREATE TABLE `Skill` (
   `ID`   INT(8)      NOT NULL AUTO_INCREMENT,
-  `Name` VARCHAR(20) NOT NULL
+  `Name` VARCHAR(20) NOT NULL,
   PRIMARY KEY (`ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 CREATE TABLE `VacancySkill` (
   `SkillID`   INT(8) NOT NULL,
-  `VacancyID` INT(8) NOT NULL
-  PRIMARY KEY (`SkillID`),
-  PRIMARY KEY (`VacancyID`)
+  `VacancyID` INT(8) NOT NULL,
+  PRIMARY KEY (`SkillID`, `VacancyID`),
+  CONSTRAINT fk_VacancySkill_SkillID FOREIGN KEY (`SkillID`)
+  REFERENCES Skill(`ID`) ON DELETE CASCADE,
+  CONSTRAINT fk_VacancySkill_VacancyID FOREIGN KEY (`VacancyID`)
+  REFERENCES Vacancy(`ID`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
-CREATE TABLE `VacancySkill` (
+CREATE TABLE `StudentSkill` (
   `SkillID`   INT(8) NOT NULL,
-  `StudentID` INT(8) NOT NULL
-  PRIMARY KEY (`SkillID`),
-  PRIMARY KEY (`StudentID`)
+  `StudentID` INT(8) NOT NULL,
+  PRIMARY KEY (`SkillID`, `StudentID`),
+  CONSTRAINT fk_StudentSkill_SkillID FOREIGN KEY (`SkillID`)
+  REFERENCES Skill(`ID`) ON DELETE CASCADE,
+  CONSTRAINT fk_StudentSkill_StudentID FOREIGN KEY (`StudentID`)
+  REFERENCES Student(`ID`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
