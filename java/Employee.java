@@ -29,13 +29,12 @@ public class Employee {
    */
 
   public String[] asRow () {
-    // TODO: Is there a better way to convert an int to a String?
     return new String[] {
-      id     + "",
+      Integer.toString(id),
       name,
-      gender + "",
-      age    + "",
-      duties + ""
+      Character.toString(gender),
+      Integer.toString(age),
+      Integer.toString(duties)
     };
   }
 

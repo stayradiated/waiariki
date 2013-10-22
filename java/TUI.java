@@ -26,6 +26,13 @@ public class TUI {
     new TableColumn("Number of Duties", 20)
   };
 
+  private final Question[] QUESTION_EMPLOYEE = new Question[] {
+    new Question("Enter name:", "String"),
+    new Question("Enter gender (m/f):", "char"),
+    new Question("Enter age in years:", "int"),
+    new Question("Number of jobs assigned:", "int"),
+  };
+
   public static void main (String[] args) {
     new TUI();
   }
@@ -43,7 +50,7 @@ public class TUI {
 
     final TableColumn[] columns = {
       new TableColumn("#", 1),
-      new TableColumn("MAIN MENU", 60)
+      new TableColumn("Main Menu", 60)
     };
 
     final String[][] rows = {
@@ -64,7 +71,7 @@ public class TUI {
     this.numberOfEmployees();
     table.print();
 
-    int selection = this.readInt("\nSelect Option: ");
+    int selection = this.readInt("Select Option: ");
 
     switch (selection) {
       case 1: // Add employee
@@ -73,6 +80,10 @@ public class TUI {
 
       case 2: // Delete employee
         this.delete();
+        break;
+
+      case 3: // Modify employee
+        this.modify();
         break;
 
       case 4: // List all employees
@@ -113,6 +124,9 @@ public class TUI {
 
   private void add () {
 
+    final Title title = new Title("1. Add Employee");
+    title.print();
+
     // Check employees record is not full
     if (this.employees.isFull()) {
       this.print(MESSAGE_FULL);
@@ -121,19 +135,9 @@ public class TUI {
 
     Employee employee = new Employee();
 
-    Questions questions = new Questions(new Question[] {
-      new Question("Enter name:", "String"),
-      new Question("Enter gender (m/f):", "char"),
-      new Question("Enter age in years:", "int"),
-      new Question("Number of jobs assigned:", "int"),
-    }, this.scanner);
-
+    Questions questions = new Questions(QUESTION_EMPLOYEE, this.scanner);
     Object[] answers = questions.ask();
-
-    employee.setName(   (String)    answers[0] );
-    employee.setGender( (Character) answers[1] );
-    employee.setAge(    (Integer)   answers[2] );
-    employee.setDuties( (Integer)   answers[3] );
+    this.setEmployee(employee, answers);
 
     int id = this.employees.add(employee);
     this.print("\nEmployee ID is " + id + "\n");
@@ -147,6 +151,10 @@ public class TUI {
 
 
   private void delete () {
+
+    final Title title = new Title("2. Delete Employee");
+    title.print();
+
     int id = this.readInt("Enter Employee ID: ");
 
     if (this.employees.has(id) == false) {
@@ -156,9 +164,58 @@ public class TUI {
 
     Employee employee = this.employees.get(id);
     this.printEmployeeDetails(employee);
-    this.print("Are you sure you want to delete this record? (y/n)");
-    this.employees.remove(id);
+    Question question = new Question("Are you sure you want to delete this record? (y/N)", "char");
+    if ((Character) question.ask(this.scanner) == 'y') {
+      this.employees.remove(id);
+      this.print(NL + "Employee " + id + " has been deleted." + NL);
+    } else {
+      this.print(NL + "Employee " + id + " has NOT been deleted." + NL);
+    }
   }
+
+
+  /**
+   * 3. Modify an employee
+   */
+
+  private void modify () {
+
+    final Title title = new Title("3. Modify Employee");
+    title.print();
+
+    int id = readInt("Enter Employee ID: ");
+
+    // Check employee ID exists
+    if (!this.employees.has(id)) {
+      this.print("Error - invalid ID" + NL);
+      return;
+    }
+
+    // Get employee to be modified
+    Employee employee = this.employees.get(id);
+
+    // Ask questions
+    Questions questions = new Questions(QUESTION_EMPLOYEE, this.scanner);
+    Object[] answers = questions.ask();
+
+    // Confirm changes
+    Question confirm = new Question(
+      NL + "Are you sure you want to modify this record? (Y/n)",
+      "char"
+    );
+
+    char answer = (Character) confirm.ask(this.scanner);
+
+    if (answer == 'n') {
+      return;
+    }
+
+    // Modify employee
+    this.setEmployee(employee, answers);
+    this.print(NL + "Record modified." + NL);
+
+  }
+
 
 
   /**
@@ -166,6 +223,10 @@ public class TUI {
    */
 
   private void listAll () {
+
+    final Title title = new Title("4. List of All Employees");
+    title.print();
+
     Table table = new Table(TABLE_EMPLOYEE, this.employees.asRows());
     table.print();
     this.numberOfEmployees();
@@ -176,6 +237,10 @@ public class TUI {
    */
 
   private void listSingle () {
+
+    final Title title = new Title("5. Details for a Single Employee");
+    title.print();
+
     int id = this.readInt("Enter ID: ");
 
     if (this.employees.has(id)) {
@@ -200,9 +265,35 @@ public class TUI {
    */
 
   public void listAgeGroup () {
-    Employees list = this.employees.inAgeGroup(25, 35);
+
+    final Title title = new Title("6. Employees in Age Group");
+    title.print();
+
+    Questions questions = new Questions(new Question[] {
+      new Question("Minimum age:", "int"),
+      new Question("Maximum age:", "int")
+    }, this.scanner);
+
+    Object[] age = questions.ask();
+
+    Employees list = this.employees.inAgeGroup(
+      (Integer) age[0],
+      (Integer) age[1]
+    );
+
     Table table = new Table(TABLE_EMPLOYEE, list.asRows());
-    table.print();
+
+    this.print(NL);
+    table.print(new String[] {
+      "ID", "Name", "Age"
+    });
+
+    this.print(
+      "\nThere are " + list.length +
+      " employee(s) in the age range of " + age[0] +
+      " to " + age[1] + ".\n"
+    );
+
   }
 
   /**
@@ -210,6 +301,10 @@ public class TUI {
    */
 
   public void showMostDuties () {
+
+    final Title title = new Title("7. Employee with Most Duties Assigned");
+    title.print();
+
     Employee employee = this.employees.withMostDuties();
     this.printEmployeeDetails(employee);
   }
@@ -219,10 +314,19 @@ public class TUI {
    */
 
   public void showNoDuties () {
+
+    final Title title = new Title("8. Employees with No Duties Assigned");
+    title.print();
+
     Employees list = this.employees.withNoDuties();
     Table table = new Table(TABLE_EMPLOYEE, list.asRows());
     table.print();
-    this.print("\nThere are " + list.length + " employees with no jobs assigned.\n");
+
+    this.print(
+      "\nThere are " + list.length +
+      " employee(s) with no jobs assigned.\n"
+    );
+
   }
 
 
@@ -231,12 +335,26 @@ public class TUI {
    */
 
   private void exit () {
+
+    final Title title = new Title("9. Exit");
+    title.print();
+
     this.write();
     this.print(MESSAGE_THANKS);
     this.waitForUser();
     System.exit(0);
   }
 
+  /**
+   * Change employee settings
+   */
+
+  private void setEmployee (Employee employee, Object[] answers) {
+    employee.setName(   (String)    answers[0] );
+    employee.setGender( (Character) answers[1] );
+    employee.setAge(    (Integer)   answers[2] );
+    employee.setDuties( (Integer)   answers[3] );
+  }
 
   /**
    * Write data to file

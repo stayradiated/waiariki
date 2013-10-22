@@ -16,29 +16,9 @@ public class Questions {
     Object[] answers = new Object[this.questions.length];
     this.scanner.skip("\n");
     for (int i = 0; i < this.questions.length; i++) {
-      answers[i] = this.askQuestion(this.questions[i]);
+      answers[i] = this.questions[i].ask(this.maxLength, this.scanner);
     }
     return answers;
-  }
-
-  private Object askQuestion (Question question) {
-    Object input = null;
-    String text = question.getText();
-    String type = question.getType();
-
-    this.print(text);
-
-    if (type.equals("String")) {
-      input = this.scanner.nextLine();
-    }
-    else if (type.equals("int")) {
-      input = this.scanner.nextInt();
-    }
-    else if (type.equals("char")) {
-      input = this.scanner.nextLine().charAt(0);
-    }
-
-    return input;
   }
 
   private int calculateMaxLength () {
@@ -50,10 +30,6 @@ public class Questions {
     }
     this.maxLength = max;
     return this.maxLength;
-  }
-
-  private void print (String message) {
-    System.out.printf("%-" + this.maxLength + "s ", message);
   }
 
 }

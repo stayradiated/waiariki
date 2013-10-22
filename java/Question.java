@@ -1,3 +1,5 @@
+import java.util.Scanner;
+
 public class Question {
 
   private String text;
@@ -9,6 +11,48 @@ public class Question {
     this.type = _type;
     this.length = this.text.length();
   }
+
+  /**
+   * Ask question
+   * @param length - length of text
+   * @param scanner - Scanner instance
+   * @return Object - answer
+   */
+
+  public Object ask (int length, Scanner scanner) {
+
+    Object input = null;
+
+    System.out.printf("%-" + length + "s ", text);
+
+    if (type.equals("String")) {
+      input = scanner.nextLine();
+    }
+    else if (type.equals("int")) {
+      input = scanner.nextInt();
+    }
+    else if (type.equals("char")) {
+      String text = scanner.next();
+      if (text.length() == 0) {
+        scanner.skip("\n");
+        text = scanner.next();
+      }
+      input = text.charAt(0);
+    }
+
+    return input;
+
+  }
+
+  /**
+   * Ask question
+   * @param scanner
+   * @return Object
+   */
+  public Object ask (Scanner scanner) {
+    return this.ask(text.length(), scanner);
+  }
+
 
   /**
    * Get text

@@ -14,8 +14,7 @@ public class Employees {
    * Private variables
    */
 
-  private final String FILENAME = "employees.txt";
-  private final String ERROR = "Error! ";
+  private final String SAVEFILE = "employees.txt";
   private final String ERROR_OPEN = "File %s cannot be opened\n";
   private final String ERROR_READ = "File %s cannot be read\n";
 
@@ -112,9 +111,10 @@ public class Employees {
    */
 
   public void remove (int id) {
-    for (int i = 0; i < this.length; i++) {
-      if (this.employees.get(i).getId() == id) {
+    for (int i = this.length - 1; i >= 0; i--) {
+      if (this.at(i).getId() == id) {
         this.employees.remove(i);
+        break;
       }
     }
     this.length = this.employees.size();
@@ -192,14 +192,14 @@ public class Employees {
     PrintWriter writer = null;
 
     try {
-      file = new FileWriter(FILENAME);
+      file = new FileWriter(SAVEFILE);
       writer = new PrintWriter(file);
     }
     catch (FileNotFoundException e) {
-      this.error(String.format(ERROR_OPEN, FILENAME));
+      this.error(String.format(ERROR_OPEN, SAVEFILE));
     }
     catch (IOException e) {
-      this.error(String.format(ERROR_READ, FILENAME));
+      this.error(String.format(ERROR_READ, SAVEFILE));
     }
 
     // Loop through the ArrayList of employees
@@ -220,7 +220,7 @@ public class Employees {
 
   public void read () {
     try {
-      FileReader file = new FileReader(FILENAME);
+      FileReader file = new FileReader(SAVEFILE);
       BufferedReader reader = new BufferedReader(file);
       String line = reader.readLine();
       while (line != null) {
@@ -229,23 +229,25 @@ public class Employees {
       }
     }
     catch (FileNotFoundException e) {
-      this.error(String.format(ERROR_OPEN, FILENAME));
+      this.error(String.format(ERROR_OPEN, SAVEFILE));
     }
     catch (IOException e) {
-      this.error(String.format(ERROR_READ, FILENAME));
+      this.error(String.format(ERROR_READ, SAVEFILE));
     }
   }
 
   /**
-   * Check if file exists
+   * Check if the save file exists
+   * @return boolean
    */
 
   public boolean fileExists () {
-    return new File(FILENAME).exists();
+    return new File(SAVEFILE).exists();
   }
 
   /**
    * Check if records are full
+   * @return boolean
    */
 
   public boolean isFull () {
@@ -255,6 +257,7 @@ public class Employees {
 
   /**
    * Convert records into table row
+   * @return rows
    */
 
   public String[][] asRows () {
@@ -268,10 +271,11 @@ public class Employees {
 
   /**
    * Print error and exit
+   * @param message - error message
    */
 
   private void error (String message) {
-    System.out.println(ERROR + message);
+    System.out.println("Fatal error: " + message);
     System.exit(0);
   }
 

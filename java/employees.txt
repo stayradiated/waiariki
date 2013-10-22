@@ -1,6 +1,9 @@
-104,James,m,34,32
 105,John,m,23,3
 106,Macy,f,32,4
 107,Peter,m,20,123
 108,Sarah,f,40,0
 109,Michael,m,20,32
+110,Peter,m,19,29
+111,Rachel,f,22,33
+112,Gabe,m,40,1
+113,Jamaic,f,32,99
