@@ -1,0 +1,30 @@
+Informal
+
+Formal
+
+- Term, group, distiguishing features
+- Do not use 'is when', 'is what', 'is where'.
+
+Expanded
+
+BitTorrent
+==========
+
+- group: protocol
+
+> BitTorrent is an internet protocol designed to share large amounts of data by allowing users to download and upload parts of the file simultaneously with others.
+
+Peak Oil
+========
+
+- The point in time when the maximum rate of petroleum extraction is reached, after which the rate of production is expected to enter terminal decline.
+
+Oil is a non-renewable resource and will eventually run out. It is currently impossible to tell when exactly this will happen, but it is possible to track the production rate of oil.. In 1956, M. King Hubbert, was the first to create a model that tracked current oil production rates and estimated when peak oil production would occur. After this point, the rate of production will start decline until all the oil has run out.
+
+Peak oil is a point in time when the maximum rate at which we can extract oil. Eventually global demand will move to a point where it consistently exceeds supply. 
+
+
+
+
+Often mis-understood, peak oil does not relate to the prediction of when there is no more oil left to extract from the earth's oil fields. It is actually a point in time when the maximum rate at which we can extract oil is reached. After this point the rate of production will start to decline until all the oil is run out. When exactly peak oil will occur depends on the supply and demand for oil as well as the ease of access and extraction rates from oil wells.
+
