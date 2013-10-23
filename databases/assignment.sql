@@ -3,36 +3,22 @@
  */
 
 CREATE TABLE Location (
-  ID   int      NOT NULL  IDENTITY(1,1),
+  ID   int         NOT NULL  IDENTITY(1,1),
   Name varchar(30) NOT NULL,
   CONSTRAINT pk_Location PRIMARY KEY (ID)
 );
 
 CREATE TABLE Employer (
-  ID         int      NOT NULL  IDENTITY(1,1),
+  ID         int         NOT NULL  IDENTITY(1,1),
   Name       varchar(30) NOT NULL,
-  LocationID int      NOT NULL,
+  LocationID int         NOT NULL,
   CONSTRAINT pk_Employer PRIMARY KEY (ID),
   CONSTRAINT fk_Employer_LocationID FOREIGN KEY (LocationID)
   REFERENCES Location (ID) ON DELETE NO ACTION
 );
 
-CREATE TABLE Vacancy (
-  ID          int       NOT NULL  IDENTITY(1,1),
-  Description varchar(200) NOT NULL,
-  EmployerID  int       NOT NULL,
-  LocationID  int       NOT NULL,
-  DateCreated datetime    NOT NULL  DEFAULT CURRENT_TIMESTAMP,
-  Type        tinyint   NOT NULL,
-  CONSTRAINT pk_Vacancy PRIMARY KEY (ID),
-  CONSTRAINT fk_Vacancy_EmployerID FOREIGN KEY (EmployerID)
-  REFERENCES Employer (ID) ON DELETE NO ACTION,
-  CONSTRAINT fk_Vacancy_LocationID FOREIGN KEY (LocationID)
-  REFERENCES Location (ID) ON DELETE NO ACTION
-);
-
 CREATE TABLE Student (
-  ID        int       NOT NULL  IDENTITY(1,1),
+  ID        int          NOT NULL  IDENTITY(1,1),
   FirstName varchar(30)  NOT NULL,
   LastName  varchar(30)  NOT NULL,
   Address   varchar(100) NOT NULL,
@@ -40,8 +26,34 @@ CREATE TABLE Student (
   CONSTRAINT pk_Student PRIMARY KEY (ID)
 );
 
+CREATE TABLE StudentEmployed (
+  ID        int          NOT NULL,
+  FirstName varchar(30)  NOT NULL,
+  LastName  varchar(30)  NOT NULL,
+  Address   varchar(100) NOT NULL,
+  Phone     varchar(20)  NOT NULL,
+  CONSTRAINT pk_StudentEmployed PRIMARY KEY (ID)
+);
+
+CREATE TABLE Vacancy (
+  ID          int          NOT NULL  IDENTITY(1,1),
+  Description varchar(200) NOT NULL,
+  EmployerID  int          NOT NULL,
+  LocationID  int          NOT NULL,
+  DateCreated datetime     NOT NULL  DEFAULT CURRENT_TIMESTAMP,
+  Type        tinyint      NOT NULL,
+  StudentID   int          NULL,
+  CONSTRAINT pk_Vacancy PRIMARY KEY (ID),
+  CONSTRAINT fk_Vacancy_EmployerID FOREIGN KEY (EmployerID)
+  REFERENCES Employer (ID) ON DELETE NO ACTION,
+  CONSTRAINT fk_Vacancy_LocationID FOREIGN KEY (LocationID)
+  REFERENCES Location (ID) ON DELETE NO ACTION,
+  CONSTRAINT fk_Vacancy_StudentID FOREIGN KEY (StudentID)
+  REFERENCES StudentEmployed (ID) ON DELETE SET NULL
+);
+
 CREATE TABLE Skill (
-  ID   int      NOT NULL  IDENTITY(1,1),
+  ID   int         NOT NULL  IDENTITY(1,1),
   Name varchar(20) NOT NULL,
   CONSTRAINT pk_Skill PRIMARY KEY (ID)
 );
@@ -67,8 +79,8 @@ CREATE TABLE VacancySkill (
 );
 
 CREATE TABLE Applicant (
-  StudentID   int    NOT NULL,
-  VacancyID   int    NOT NULL,
+  StudentID   int      NOT NULL,
+  VacancyID   int      NOT NULL,
   DateCreated datetime NOT NULL  DEFAULT CURRENT_TIMESTAMP,
   CONSTRAINT pk_Applicant PRIMARY KEY (StudentID,VacancyID),
   CONSTRAINT fk_Applicant_StudentID FOREIGN KEY (StudentID)
@@ -124,6 +136,28 @@ INSERT INTO Student (FirstName, LastName, Address, Phone) VALUES ('James','Howle
 INSERT INTO Student (FirstName, LastName, Address, Phone) VALUES ('Steven','Rogers','New York','12312');
 INSERT INTO Student (FirstName, LastName, Address, Phone) VALUES ('Tony','Stark','New York','41231');
 INSERT INTO Student (FirstName, LastName, Address, Phone) VALUES ('Wade','Wilson','Canada','12511');
+
+INSERT INTO StudentEmployed (FirstName, LastName, Address, Phone) VALUES ('Clark','Kent','Metropolis','12345');
+INSERT INTO StudentEmployed (FirstName, LastName, Address, Phone) VALUES ('Hal','Jordon','Coast city','51232');
+INSERT INTO StudentEmployed (FirstName, LastName, Address, Phone) VALUES ('Peter','Parker','New York','12354');
+INSERT INTO StudentEmployed (FirstName, LastName, Address, Phone) VALUES ('Wally','West','Keystone City','23422');
+INSERT INTO StudentEmployed (FirstName, LastName, Address, Phone) VALUES ('Bruce','Wayne','Gotham City','42352');
+INSERT INTO StudentEmployed (FirstName, LastName, Address, Phone) VALUES ('Bruce','Banner','New York','52313');
+INSERT INTO StudentEmployed (FirstName, LastName, Address, Phone) VALUES ('James','Howlett','Canada','12314');
+INSERT INTO StudentEmployed (FirstName, LastName, Address, Phone) VALUES ('Steven','Rogers','New York','12312');
+INSERT INTO StudentEmployed (FirstName, LastName, Address, Phone) VALUES ('Tony','Stark','New York','41231');
+INSERT INTO StudentEmployed (FirstName, LastName, Address, Phone) VALUES ('Wade','Wilson','Canada','12511');
+
+INSERT INTO Vacancy (Description, EmployerID, LocationID, DateCreated, Type, StudentID) VALUES ('Reporter',1,1,'2013-10-22 18:45:00',1, 1);
+INSERT INTO Vacancy (Description, EmployerID, LocationID, DateCreated, Type, StudentID) VALUES ('Photographer',2,2,'2013-10-22 18:46:00',0, 2);
+INSERT INTO Vacancy (Description, EmployerID, LocationID, DateCreated, Type, StudentID) VALUES ('Police Officer',3,3,'2013-10-22 18:57:41',1, 3);
+INSERT INTO Vacancy (Description, EmployerID, LocationID, DateCreated, Type, StudentID) VALUES ('Forensic Scientist',4,4,'2013-10-22 19:37:49',1, 4);
+INSERT INTO Vacancy (Description, EmployerID, LocationID, DateCreated, Type, StudentID) VALUES ('Detective',5,5,'2013-10-22 19:38:03',5, 5);
+INSERT INTO Vacancy (Description, EmployerID, LocationID, DateCreated, Type, StudentID) VALUES ('Attorney',6,6,'2013-10-22 19:38:12',6, 6);
+INSERT INTO Vacancy (Description, EmployerID, LocationID, DateCreated, Type, StudentID) VALUES ('Scientist',7,7,'2013-10-22 19:38:42',7, 7);
+INSERT INTO Vacancy (Description, EmployerID, LocationID, DateCreated, Type, StudentID) VALUES ('Fire Fighter',8,8,'2013-10-22 19:39:32',8, 8);
+INSERT INTO Vacancy (Description, EmployerID, LocationID, DateCreated, Type, StudentID) VALUES ('Lawyer',9,9,'2013-10-22 19:41:42',9, 9);
+INSERT INTO Vacancy (Description, EmployerID, LocationID, DateCreated, Type, StudentID) VALUES ('Teacher',10,10,'2013-10-22 19:41:53',10, 10);
 
 INSERT INTO Skill (Name) VALUES ('Superhuman Strength');
 INSERT INTO Skill (Name) VALUES ('Invulnerability');
