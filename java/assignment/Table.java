@@ -1,10 +1,19 @@
+/**
+ * class: Table
+ * purpose: Generate a table using symbols
+ */
+
 import java.util.Arrays;
 
 public class Table {
 
+  /**
+   * Private variables
+   */
+
+  private int           width;
+  private String[][]    rows;
   private TableColumn[] columns;
-  private String[][] rows;
-  private int width;
 
   private final String V_SEP  = "|";
   private final String CORNER = "+";
@@ -12,32 +21,19 @@ public class Table {
   private final String NL     = "\n";
   private final String PAD    = " ";
 
-  private final String BOLD;
-  private final String RESET;
-
-
   /**
-   * Default constructor
-   * @param _columns - table columns
+   * Constructor
+   * @param _columns - an arary of table columns
    */
 
   public Table (TableColumn[] _columns) {
     this.columns = _columns;
     this.rows = new String[][] {};
-
-    if (System.getProperty("os.name").equals("Linux")) {
-      BOLD  = "\033[1m";
-      RESET = "\033[0m";
-    } else {
-      BOLD  = "";
-      RESET = "";
-    }
-
   }
 
 
   /**
-   * Alternative constructor 
+   * Alternative constructor
    * @param _columns - table columns
    * @param _rows - table rows
    */
@@ -105,6 +101,9 @@ public class Table {
     TableColumn column;
     String[] row;
 
+    // Create the line
+    // +----+---------+------+
+
     for (int i = 0; i < index.length; i++) {
 
       column = this.columns[index[i]];
@@ -121,22 +120,24 @@ public class Table {
 
     line += NL;
 
+    // Top line
     out += line;
 
+    // Left border and padding
     out += V_SEP + PAD;
+
+    // Table column heading
     for (int i = 0; i < index.length; i++) {
       column = this.columns[index[i]];
-      out += BOLD;
       out += String.format(
         "%-" + column.getWidth() + "s",
         column.getName()
       );
-      out += RESET;
       out += PAD + V_SEP + PAD;
     }
 
-    out += NL;
-    out += line;
+    // New line 
+    out += NL + line;
 
     // Print all rows
     for (int i = 0; i < this.rows.length; i++) {
@@ -164,19 +165,23 @@ public class Table {
     out += NL;
 
     System.out.print(out);
-
     return out;
 
-  
   }
 
 
   /**
    * Add multiple rows to the table
-   * @param _rows - table rows
+   * @param _rows - table rows as a multidimensional array of strings
+   * {
+   *   { "cell A1", "cell B1", "cell C1" },
+   *   { "cell A2", "cell B2", "cell C2" },
+   *   { "cell A3", "cell B3", "cell C3" },
+   * }
    */
 
   public void addRows (String[][] _rows) {
+    // Concatenate two arrays
     String[][] result = Arrays.copyOf(this.rows, this.rows.length + _rows.length);
     System.arraycopy(_rows, 0, result, this.rows.length, _rows.length);
     this.rows = result;

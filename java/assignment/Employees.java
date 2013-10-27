@@ -1,3 +1,8 @@
+/**
+ * class: Employees
+ * purpose: Handle a collection of employees, including methods to save and load the collection to a file.
+ */
+
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.io.File;

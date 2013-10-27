@@ -1,4 +1,9 @@
 
+/**
+ * class: Employee
+ * purpose: Model a single employee
+ */
+
 public class Employee {
 
   private int    id;
@@ -7,6 +12,10 @@ public class Employee {
   private char   gender;
   private String name;
 
+  /**
+   * Default constructor
+   */
+
   public Employee () {
     id     = -1;
     age    = -1;
@@ -14,6 +23,15 @@ public class Employee {
     gender = 'M';
     name   = "";
   }
+
+  /**
+   * Alternative constructor
+   * @param _id - employee id
+   * @param _name - employee name
+   * @param _gender - employee gender
+   * @param _age - employee age
+   * @param _duties - employee duties
+   */
 
   public Employee (int _id, String _name, char _gender, int _age, int _duties) {
     id     = _id;
@@ -26,6 +44,7 @@ public class Employee {
 
   /**
    * Convert the employee into a table row
+   * @return String[] - the employee details serialized
    */
 
   public String[] asRow () {

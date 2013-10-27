@@ -1,3 +1,8 @@
+/**
+ * class: Question
+ * purpose: Ask the user a question
+ */
+
 import java.util.Scanner;
 
 public class Question {

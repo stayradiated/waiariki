@@ -137,27 +137,27 @@ INSERT INTO Student (FirstName, LastName, Address, Phone) VALUES ('Steven','Roge
 INSERT INTO Student (FirstName, LastName, Address, Phone) VALUES ('Tony','Stark','New York','41231');
 INSERT INTO Student (FirstName, LastName, Address, Phone) VALUES ('Wade','Wilson','Canada','12511');
 
-INSERT INTO StudentEmployed (FirstName, LastName, Address, Phone) VALUES ('Clark','Kent','Metropolis','12345');
-INSERT INTO StudentEmployed (FirstName, LastName, Address, Phone) VALUES ('Hal','Jordon','Coast city','51232');
-INSERT INTO StudentEmployed (FirstName, LastName, Address, Phone) VALUES ('Peter','Parker','New York','12354');
-INSERT INTO StudentEmployed (FirstName, LastName, Address, Phone) VALUES ('Wally','West','Keystone City','23422');
-INSERT INTO StudentEmployed (FirstName, LastName, Address, Phone) VALUES ('Bruce','Wayne','Gotham City','42352');
-INSERT INTO StudentEmployed (FirstName, LastName, Address, Phone) VALUES ('Bruce','Banner','New York','52313');
-INSERT INTO StudentEmployed (FirstName, LastName, Address, Phone) VALUES ('James','Howlett','Canada','12314');
-INSERT INTO StudentEmployed (FirstName, LastName, Address, Phone) VALUES ('Steven','Rogers','New York','12312');
-INSERT INTO StudentEmployed (FirstName, LastName, Address, Phone) VALUES ('Tony','Stark','New York','41231');
-INSERT INTO StudentEmployed (FirstName, LastName, Address, Phone) VALUES ('Wade','Wilson','Canada','12511');
+INSERT INTO StudentEmployed (ID, FirstName, LastName, Address, Phone) VALUES (11, 'Clark','Kent','Metropolis','12345');
+INSERT INTO StudentEmployed (ID, FirstName, LastName, Address, Phone) VALUES (12, 'Hal','Jordon','Coast city','51232');
+INSERT INTO StudentEmployed (ID, FirstName, LastName, Address, Phone) VALUES (13, 'Peter','Parker','New York','12354');
+INSERT INTO StudentEmployed (ID, FirstName, LastName, Address, Phone) VALUES (14, 'Wally','West','Keystone City','23422');
+INSERT INTO StudentEmployed (ID, FirstName, LastName, Address, Phone) VALUES (15, 'Bruce','Wayne','Gotham City','42352');
+INSERT INTO StudentEmployed (ID, FirstName, LastName, Address, Phone) VALUES (16, 'Bruce','Banner','New York','52313');
+INSERT INTO StudentEmployed (ID, FirstName, LastName, Address, Phone) VALUES (17, 'James','Howlett','Canada','12314');
+INSERT INTO StudentEmployed (ID, FirstName, LastName, Address, Phone) VALUES (18, 'Steven','Rogers','New York','12312');
+INSERT INTO StudentEmployed (ID, FirstName, LastName, Address, Phone) VALUES (19, 'Tony','Stark','New York','41231');
+INSERT INTO StudentEmployed (ID, FirstName, LastName, Address, Phone) VALUES (20, 'Wade','Wilson','Canada','12511');
 
-INSERT INTO Vacancy (Description, EmployerID, LocationID, DateCreated, Type, StudentID) VALUES ('Reporter',1,1,'2013-10-22 18:45:00',1, 1);
-INSERT INTO Vacancy (Description, EmployerID, LocationID, DateCreated, Type, StudentID) VALUES ('Photographer',2,2,'2013-10-22 18:46:00',0, 2);
-INSERT INTO Vacancy (Description, EmployerID, LocationID, DateCreated, Type, StudentID) VALUES ('Police Officer',3,3,'2013-10-22 18:57:41',1, 3);
-INSERT INTO Vacancy (Description, EmployerID, LocationID, DateCreated, Type, StudentID) VALUES ('Forensic Scientist',4,4,'2013-10-22 19:37:49',1, 4);
-INSERT INTO Vacancy (Description, EmployerID, LocationID, DateCreated, Type, StudentID) VALUES ('Detective',5,5,'2013-10-22 19:38:03',5, 5);
-INSERT INTO Vacancy (Description, EmployerID, LocationID, DateCreated, Type, StudentID) VALUES ('Attorney',6,6,'2013-10-22 19:38:12',6, 6);
-INSERT INTO Vacancy (Description, EmployerID, LocationID, DateCreated, Type, StudentID) VALUES ('Scientist',7,7,'2013-10-22 19:38:42',7, 7);
-INSERT INTO Vacancy (Description, EmployerID, LocationID, DateCreated, Type, StudentID) VALUES ('Fire Fighter',8,8,'2013-10-22 19:39:32',8, 8);
-INSERT INTO Vacancy (Description, EmployerID, LocationID, DateCreated, Type, StudentID) VALUES ('Lawyer',9,9,'2013-10-22 19:41:42',9, 9);
-INSERT INTO Vacancy (Description, EmployerID, LocationID, DateCreated, Type, StudentID) VALUES ('Teacher',10,10,'2013-10-22 19:41:53',10, 10);
+INSERT INTO Vacancy (Description, EmployerID, LocationID, DateCreated, Type, StudentID) VALUES ('Reporter',1,1,'2013-10-22 18:45:00',1, 11);
+INSERT INTO Vacancy (Description, EmployerID, LocationID, DateCreated, Type, StudentID) VALUES ('Photographer',2,2,'2013-10-22 18:46:00',0, 12);
+INSERT INTO Vacancy (Description, EmployerID, LocationID, DateCreated, Type, StudentID) VALUES ('Police Officer',3,3,'2013-10-22 18:57:41',1, 13);
+INSERT INTO Vacancy (Description, EmployerID, LocationID, DateCreated, Type, StudentID) VALUES ('Forensic Scientist',4,4,'2013-10-22 19:37:49',1, 14);
+INSERT INTO Vacancy (Description, EmployerID, LocationID, DateCreated, Type, StudentID) VALUES ('Detective',5,5,'2013-10-22 19:38:03',5, 15);
+INSERT INTO Vacancy (Description, EmployerID, LocationID, DateCreated, Type, StudentID) VALUES ('Attorney',6,6,'2013-10-22 19:38:12',6, 16);
+INSERT INTO Vacancy (Description, EmployerID, LocationID, DateCreated, Type, StudentID) VALUES ('Scientist',7,7,'2013-10-22 19:38:42',7, 17);
+INSERT INTO Vacancy (Description, EmployerID, LocationID, DateCreated, Type, StudentID) VALUES ('Fire Fighter',8,8,'2013-10-22 19:39:32',8, 18);
+INSERT INTO Vacancy (Description, EmployerID, LocationID, DateCreated, Type, StudentID) VALUES ('Lawyer',9,9,'2013-10-22 19:41:42',9, 19);
+INSERT INTO Vacancy (Description, EmployerID, LocationID, DateCreated, Type, StudentID) VALUES ('Teacher',10,10,'2013-10-22 19:41:53',10, 20);
 
 INSERT INTO Skill (Name) VALUES ('Superhuman Strength');
 INSERT INTO Skill (Name) VALUES ('Invulnerability');

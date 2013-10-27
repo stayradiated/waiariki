@@ -1,11 +1,15 @@
 /**
- * The Textual User Interface (TUI) handles the input and output of the system.
- * This includes displaying menus, and lists as well as listening to user input.
+ * class: TUI
+ * purpose: The Textual User Interface (TUI) handles the input and output of the system.  This includes displaying menus, and lists as well as listening to user input.
  */
 
 import java.util.Scanner;
 
 public class TUI {
+
+  /**
+   * Private variables
+   */
 
   private Scanner scanner;
   private Employees employees;
@@ -33,11 +37,11 @@ public class TUI {
     new Question("Number of jobs assigned:", "int"),
   };
 
-  public static void main (String[] args) {
-    new TUI();
-  }
+  /**
+   * Default constructor
+   */
 
-  private TUI () {
+  public TUI () {
     this.scanner = new Scanner(System.in);
     this.employees = new Employees();
     if (this.employees.fileExists()) {
@@ -388,6 +392,8 @@ public class TUI {
 
   /**
    * Read an integer
+   * @param prompt - the message to display
+   * @return int - the users answer
    */
 
   private int readInt (String prompt) {
@@ -415,6 +421,7 @@ public class TUI {
 
   /**
    * Print text to the screen
+   * @param String - text to print
    */
 
   private void print (String string) {

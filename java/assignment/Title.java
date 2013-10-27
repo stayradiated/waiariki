@@ -1,7 +1,14 @@
+/**
+ * class: Title
+ * purpose: Create a title using a Table
+ */
 
 public class Title {
 
-  /* Variables */
+  /**
+   * Private variables
+   */
+
   private final int WIDTH = 64;
   private String title;
   private Table table;
@@ -52,6 +59,7 @@ public class Title {
    */
 
   private Table createTable () {
+
     // Calculate amount of padding required
     int length = this.title.length();
     int padding = (WIDTH / 2) + (length / 2);
