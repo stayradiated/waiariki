@@ -20,7 +20,7 @@ public class Employee {
     id     = -1;
     age    = -1;
     duties = -1;
-    gender = 'M';
+    gender = 'm';
     name   = "";
   }
 
@@ -43,11 +43,11 @@ public class Employee {
   }
 
   /**
-   * Convert the employee into a table row
+   * Convert the employee into an array of Strings
    * @return String[] - the employee details serialized
    */
 
-  public String[] asRow () {
+  public String[] serialize () {
     return new String[] {
       Integer.toString(id),
       name,

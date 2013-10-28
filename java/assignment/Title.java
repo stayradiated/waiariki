@@ -1,6 +1,6 @@
 /**
  * class: Title
- * purpose: Create a title using a Table
+ * purpose: Display a box with centered text
  */
 
 public class Title {
@@ -9,7 +9,9 @@ public class Title {
    * Private variables
    */
 
+  // Width of the box
   private final int WIDTH = 64;
+
   private String title;
   private Table table;
 

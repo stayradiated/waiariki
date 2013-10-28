@@ -22,6 +22,8 @@ public class TUI {
   private final String MESSAGE_WRITE = "Number of employee records written to employees.txt file: ";
   private final String NL = "\n";
 
+  private final String ERROR_NO_RECORDS = "Error! No employee records in the system.\n";
+
   private final TableColumn[] TABLE_EMPLOYEE = {
     new TableColumn("ID", 3),
     new TableColumn("Name", 20),
@@ -32,7 +34,7 @@ public class TUI {
 
   private final Question[] QUESTION_EMPLOYEE = new Question[] {
     new Question("Enter name:", "String"),
-    new Question("Enter gender (m/f):", "char"),
+    new Question("Enter gender (m/f):", "gender"),
     new Question("Enter age in years:", "int"),
     new Question("Number of jobs assigned:", "int"),
   };
@@ -75,7 +77,8 @@ public class TUI {
     this.numberOfEmployees();
     table.print();
 
-    int selection = this.readInt("Select Option: ");
+    final Question prompt = new Question("Select Option: ", "int");
+    int selection = (Integer) prompt.ask(this.scanner);
 
     switch (selection) {
       case 1: // Add employee
@@ -139,8 +142,8 @@ public class TUI {
 
     Employee employee = new Employee();
 
-    Questions questions = new Questions(QUESTION_EMPLOYEE, this.scanner);
-    Object[] answers = questions.ask();
+    Questions questions = new Questions(QUESTION_EMPLOYEE);
+    Object[] answers = questions.ask(this.scanner);
     this.setEmployee(employee, answers);
 
     int id = this.employees.add(employee);
@@ -159,7 +162,8 @@ public class TUI {
     final Title title = new Title("2. Delete Employee");
     title.print();
 
-    int id = this.readInt("Enter Employee ID: ");
+    final Question qId = new Question("Enter Employee ID: ", "int");
+    int id = (Integer) qId.ask(this.scanner);
 
     if (this.employees.has(id) == false) {
       this.print("Could not find employee " + id + NL);
@@ -168,8 +172,11 @@ public class TUI {
 
     Employee employee = this.employees.get(id);
     this.printEmployeeDetails(employee);
-    Question question = new Question("Are you sure you want to delete this record? (y/N)", "char");
-    if ((Character) question.ask(this.scanner) == 'y') {
+
+    final Question qConfirm = new Question("Are you sure you want to delete this record? (y/N)", "yesno");
+    boolean confirm = (Boolean) qConfirm.ask(this.scanner);
+
+    if (confirm == true) {
       this.employees.remove(id);
       this.print(NL + "Employee " + id + " has been deleted." + NL);
     } else {
@@ -187,7 +194,8 @@ public class TUI {
     final Title title = new Title("3. Modify Employee");
     title.print();
 
-    int id = readInt("Enter Employee ID: ");
+    final Question qId = new Question("Enter Employee ID: ", "int");
+    int id = (Integer) qId.ask(this.scanner);
 
     // Check employee ID exists
     if (!this.employees.has(id)) {
@@ -199,18 +207,18 @@ public class TUI {
     Employee employee = this.employees.get(id);
 
     // Ask questions
-    Questions questions = new Questions(QUESTION_EMPLOYEE, this.scanner);
-    Object[] answers = questions.ask();
+    Questions questions = new Questions(QUESTION_EMPLOYEE);
+    Object[] answers = questions.ask(this.scanner);
 
     // Confirm changes
     Question confirm = new Question(
       NL + "Are you sure you want to modify this record? (Y/n)",
-      "char"
+      "yesno"
     );
 
-    char answer = (Character) confirm.ask(this.scanner);
+    boolean confirmAnswer = (Boolean) confirm.ask(this.scanner);
 
-    if (answer == 'n') {
+    if (confirmAnswer == false) {
       return;
     }
 
@@ -231,7 +239,7 @@ public class TUI {
     final Title title = new Title("4. List of All Employees");
     title.print();
 
-    Table table = new Table(TABLE_EMPLOYEE, this.employees.asRows());
+    Table table = new Table(TABLE_EMPLOYEE, this.employees.serialize());
     table.print();
     this.numberOfEmployees();
   }
@@ -245,7 +253,8 @@ public class TUI {
     final Title title = new Title("5. Details for a Single Employee");
     title.print();
 
-    int id = this.readInt("Enter ID: ");
+    final Question qId = new Question("Enter ID: ", "int");
+    int id = (Integer) qId.ask(this.scanner);
 
     if (this.employees.has(id)) {
       this.printEmployeeDetails(this.employees.get(id));
@@ -253,11 +262,11 @@ public class TUI {
       this.print("Could not find an employee with that ID." + NL + NL);
     }
 
-    this.print("Would you like to view another employee? (Y/n): ");
-    this.scanner.skip(NL);
+    Question question = new Question("Would you like to view another employee? (Y/n): ", "yesno");
+    boolean answer = (Boolean) question.ask(this.scanner);
 
-    // Default is to loop
-    if (! this.scanner.nextLine().equals("n")) {
+    // Keep running until the user enters 'n' to stop
+    if (answer) {
       this.print(NL);
       this.listSingle();
     }
@@ -276,16 +285,16 @@ public class TUI {
     Questions questions = new Questions(new Question[] {
       new Question("Minimum age:", "int"),
       new Question("Maximum age:", "int")
-    }, this.scanner);
+    });
 
-    Object[] age = questions.ask();
+    Object[] age = questions.ask(this.scanner);
 
     Employees list = this.employees.inAgeGroup(
       (Integer) age[0],
       (Integer) age[1]
     );
 
-    Table table = new Table(TABLE_EMPLOYEE, list.asRows());
+    Table table = new Table(TABLE_EMPLOYEE, list.serialize());
 
     this.print(NL);
     table.print(new String[] {
@@ -309,8 +318,13 @@ public class TUI {
     final Title title = new Title("7. Employee with Most Duties Assigned");
     title.print();
 
-    Employee employee = this.employees.withMostDuties();
-    this.printEmployeeDetails(employee);
+    if (this.employees.length > 0) {
+      Employee employee = this.employees.withMostDuties();
+      this.printEmployeeDetails(employee);
+    } else {
+      this.print(ERROR_NO_RECORDS);
+    }
+
   }
 
   /**
@@ -323,7 +337,7 @@ public class TUI {
     title.print();
 
     Employees list = this.employees.withNoDuties();
-    Table table = new Table(TABLE_EMPLOYEE, list.asRows());
+    Table table = new Table(TABLE_EMPLOYEE, list.serialize());
     table.print();
 
     this.print(
@@ -384,29 +398,10 @@ public class TUI {
 
   private void printEmployeeDetails (Employee employee) {
     String[][] rows = {
-      employee.asRow()
+      employee.serialize()
     };
     Table table = new Table(TABLE_EMPLOYEE, rows);
     table.print();
-  }
-
-  /**
-   * Read an integer
-   * @param prompt - the message to display
-   * @return int - the users answer
-   */
-
-  private int readInt (String prompt) {
-    this.print(prompt);
-    System.out.flush();
-    while (! this.scanner.hasNextInt()) {
-      this.scanner.nextLine();
-      this.print(prompt);
-      System.out.flush();
-    }
-    int option = this.scanner.nextInt();
-    this.print(NL);
-    return option;
   }
 
   /**

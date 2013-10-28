@@ -261,14 +261,14 @@ public class Employees {
 
 
   /**
-   * Convert records into table row
+   * Convert records into an array of arrays of Strings
    * @return rows
    */
 
-  public String[][] asRows () {
+  public String[][] serialize () {
     String[][] rows = new String[this.length][5];
     for (int i = 0; i < this.length; i++) {
-      rows[i] = this.employees.get(i).asRow();
+      rows[i] = this.employees.get(i).serialize();
     }
     return rows;
   }

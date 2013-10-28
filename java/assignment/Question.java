@@ -28,21 +28,56 @@ public class Question {
 
     Object input = null;
 
-    System.out.printf("%-" + length + "s ", text);
+    this.print();
 
     if (type.equals("String")) {
       input = scanner.nextLine();
+      if (((String) input).length() < 1) {
+        System.out.println("Error! A value must be entered.");
+        return this.ask(length, scanner);
+      }
     }
+
     else if (type.equals("int")) {
+      while (! scanner.hasNextInt()) {
+        scanner.nextLine();
+        this.print();
+      }
       input = scanner.nextInt();
+      if (((Integer) input) < 0) {
+        System.out.println("Error! Negative values are not allowed.");
+        return this.ask(length, scanner);
+      }
     }
-    else if (type.equals("char")) {
+
+    else if (type.equals("gender")) {
       String text = scanner.next();
       if (text.length() == 0) {
         scanner.skip("\n");
         text = scanner.next();
       }
       input = text.charAt(0);
+      if (input != 'm' && input != 'f') {
+        System.out.println("Error! Please enter 'm' or 'f'.");
+        return this.ask(length, scanner);
+      }
+    }
+
+    else if (type.equals("yesno")) {
+      String text = scanner.next();
+      if (text.length() == 0) {
+        scanner.skip("\n");
+        text = scanner.next();
+      }
+      input = text.charAt(0);
+      if (input == 'y') {
+        input = true;
+      } else if (input == 'n') {
+        input = false;
+      } else {
+        System.out.println("Error! Please enter 'y' or 'n'.");
+        return this.ask(length, scanner);
+      }
     }
 
     return input;
@@ -93,6 +128,14 @@ public class Question {
 
   public void setType (String _type) {
     this.type = _type;
+  }
+
+  /**
+   * Print the question
+   */
+
+  private void print () {
+    System.out.printf("%-" + length + "s ", text);
   }
 
 }
