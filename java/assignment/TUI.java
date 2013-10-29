@@ -11,33 +11,31 @@ public class TUI {
    * Private variables
    */
 
-  private Scanner scanner;
+  private Scanner   scanner;
   private Employees employees;
 
-  private final String MESSAGE_WELCOME = "\nWelcome to the ABC Company Employee System\n\n";
-  private final String MESSAGE_NUMBER = "Number of employees in system: ";
-  private final String MESSAGE_FULL = "\nThe maximum amount of employees has been reached.\n";
-  private final String MESSAGE_WAIT = "\nPress ENTER to continue...\n";
-  private final String MESSAGE_THANKS = "Thank you for using the ABC Company Employee System\n";
-  private final String MESSAGE_WRITE = "Number of employee records written to employees.txt file: ";
+
+  /**
+   * Constants
+   */
+
   private final String NL = "\n";
 
-  private final String ERROR_NO_RECORDS = "Error! No employee records in the system.\n";
-
   private final TableColumn[] TABLE_EMPLOYEE = {
-    new TableColumn("ID", 3),
-    new TableColumn("Name", 20),
-    new TableColumn("Gender", 6),
-    new TableColumn("Age", 3),
-    new TableColumn("Number of Duties", 20)
+    new TableColumn("ID"             , 3),
+    new TableColumn("Name"           , 20),
+    new TableColumn("Gender"         , 6),
+    new TableColumn("Age"            , 3),
+    new TableColumn("Number of Jobs" , 20)
   };
 
   private final Question[] QUESTION_EMPLOYEE = new Question[] {
-    new Question("Enter name:", "String"),
-    new Question("Enter gender (m/f):", "gender"),
-    new Question("Enter age in years:", "int"),
-    new Question("Number of jobs assigned:", "int"),
+    new Question("Enter name:"              , "String"),
+    new Question("Enter gender (m/f):"      , "gender"),
+    new Question("Enter age in years:"      , "age"),
+    new Question("Number of jobs assigned:" , "int"),
   };
+
 
   /**
    * Default constructor
@@ -51,6 +49,10 @@ public class TUI {
     }
     this.menu();
   }
+
+  /**
+   * Display the main menu
+   */
 
   private void menu () {
 
@@ -73,7 +75,7 @@ public class TUI {
 
     final Table table = new Table(columns, rows);
 
-    this.print(MESSAGE_WELCOME);
+    this.print("\nWelcome to the ABC Company Employee System\n\n");
     this.numberOfEmployees();
     table.print();
 
@@ -136,7 +138,7 @@ public class TUI {
 
     // Check employees record is not full
     if (this.employees.isFull()) {
-      this.print(MESSAGE_FULL);
+      this.print("\nThe maximum amount of employees has been reached.\n");
       return;
     }
 
@@ -206,6 +208,10 @@ public class TUI {
     // Get employee to be modified
     Employee employee = this.employees.get(id);
 
+    // Print current details
+    this.print(NL);
+    this.printEmployeeDetails(employee);
+
     // Ask questions
     Questions questions = new Questions(QUESTION_EMPLOYEE);
     Object[] answers = questions.ask(this.scanner);
@@ -227,8 +233,6 @@ public class TUI {
     this.print(NL + "Record modified." + NL);
 
   }
-
-
 
   /**
    * 4. List all employees
@@ -302,7 +306,7 @@ public class TUI {
     });
 
     this.print(
-      "\nThere are " + list.length +
+      "\nThere are " + list.getLength() +
       " employee(s) in the age range of " + age[0] +
       " to " + age[1] + ".\n"
     );
@@ -315,15 +319,12 @@ public class TUI {
 
   public void showMostDuties () {
 
-    final Title title = new Title("7. Employee with Most Duties Assigned");
+    final Title title = new Title("7. Employee(s) with Most Jobs Assigned");
     title.print();
 
-    if (this.employees.length > 0) {
-      Employee employee = this.employees.withMostDuties();
-      this.printEmployeeDetails(employee);
-    } else {
-      this.print(ERROR_NO_RECORDS);
-    }
+    Employees employees = this.employees.withMostDuties();
+    Table table = new Table(TABLE_EMPLOYEE, employees.serialize());
+    table.print();
 
   }
 
@@ -333,7 +334,7 @@ public class TUI {
 
   public void showNoDuties () {
 
-    final Title title = new Title("8. Employees with No Duties Assigned");
+    final Title title = new Title("8. Employees with No Jobs Assigned");
     title.print();
 
     Employees list = this.employees.withNoDuties();
@@ -341,12 +342,11 @@ public class TUI {
     table.print();
 
     this.print(
-      "\nThere are " + list.length +
+      "\nThere are " + list.getLength() +
       " employee(s) with no jobs assigned.\n"
     );
 
   }
-
 
   /**
    * 9. Exit
@@ -358,13 +358,16 @@ public class TUI {
     title.print();
 
     this.write();
-    this.print(MESSAGE_THANKS);
+    this.print("Thank you for using the ABC Company Employee System\n");
     this.waitForUser();
     System.exit(0);
   }
 
+
   /**
-   * Change employee settings
+   * Change employee settings after the questions have been asked
+   * @param employee - the employee instance
+   * @param answers - the answers from the questions
    */
 
   private void setEmployee (Employee employee, Object[] answers) {
@@ -375,21 +378,27 @@ public class TUI {
   }
 
   /**
-   * Write data to file
+   * Write the employee records to the text file
    */
 
   private void write () {
     this.employees.write();
-    this.print(MESSAGE_WRITE + this.employees.length + NL + NL);
+    this.print(
+      "Number of employee records written to employees.txt file: " +
+      this.employees.getLength() + NL + NL);
   }
+
 
   /**
    * Print the number of employees in the system
    */
 
   private void numberOfEmployees () {
-    this.print(MESSAGE_NUMBER + employees.length + NL + NL);
+    this.print(
+      "Number of employees in system: " +
+      + employees.getLength() + NL + NL);
   }
+
 
   /**
    * Print the employee details
@@ -404,15 +413,17 @@ public class TUI {
     table.print();
   }
 
+
   /**
    * Wait for the user to press enter
    */
 
   private void waitForUser () {
-    this.print(MESSAGE_WAIT);
+    this.print("\nPress ENTER to continue...\n");
     this.scanner.skip(NL);
     this.scanner.nextLine();
   }
+
 
   /**
    * Print text to the screen

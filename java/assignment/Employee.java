@@ -6,6 +6,10 @@
 
 public class Employee {
 
+  /**
+   * Private variables
+   */
+
   private int    id;
   private int    age;
   private int    duties;
@@ -17,29 +21,29 @@ public class Employee {
    */
 
   public Employee () {
-    id     = -1;
-    age    = -1;
-    duties = -1;
-    gender = 'm';
-    name   = "";
+    this.id     = -1;
+    this.age    = -1;
+    this.duties = -1;
+    this.gender = 'm';
+    this.name   = "";
   }
 
   /**
    * Alternative constructor
-   * @param _id - employee id
-   * @param _name - employee name
-   * @param _gender - employee gender
-   * @param _age - employee age
-   * @param _duties - employee duties
+   * @param id     - employee id
+   * @param name   - employee name
+   * @param gender - employee gender
+   * @param age    - employee age
+   * @param duties - employee duties
    */
 
-  public Employee (int _id, String _name, char _gender, int _age, int _duties) {
-    id     = _id;
-    name   = _name;
-    gender = _gender;
-    age    = _age;
-    age    = _age;
-    duties = _duties;
+  public Employee (int id, String name, char gender, int age, int duties) {
+    this.id     = id;
+    this.name   = name;
+    this.gender = gender;
+    this.age    = age;
+    this.age    = age;
+    this.duties = duties;
   }
 
   /**
@@ -49,11 +53,11 @@ public class Employee {
 
   public String[] serialize () {
     return new String[] {
-      Integer.toString(id),
-      name,
-      Character.toString(gender),
-      Integer.toString(age),
-      Integer.toString(duties)
+      Integer.toString(   this.id     ),
+                          this.name    ,
+      Character.toString( this.gender ),
+      Integer.toString(   this.age    ),
+      Integer.toString(   this.duties )
     };
   }
 

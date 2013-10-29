@@ -41,7 +41,8 @@ public class Questions {
 
     // Ask each question
     for (int i = 0; i < this.questions.length; i++) {
-      answers[i] = this.questions[i].ask(this.maxLength, scanner);
+      this.questions[i].setLength(this.maxLength);
+      answers[i] = this.questions[i].ask(scanner);
     }
 
     return answers;

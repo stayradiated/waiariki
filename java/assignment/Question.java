@@ -24,7 +24,7 @@ public class Question {
    * @return Object - answer
    */
 
-  public Object ask (int length, Scanner scanner) {
+  public Object ask (Scanner scanner) {
 
     Object input = null;
 
@@ -34,7 +34,7 @@ public class Question {
       input = scanner.nextLine();
       if (((String) input).length() < 1) {
         System.out.println("Error! A value must be entered.");
-        return this.ask(length, scanner);
+        return this.ask(scanner);
       }
     }
 
@@ -46,8 +46,21 @@ public class Question {
       input = scanner.nextInt();
       if (((Integer) input) < 0) {
         System.out.println("Error! Negative values are not allowed.");
-        return this.ask(length, scanner);
+        return this.ask(scanner);
       }
+    }
+
+    else if (type.equals("age")) {
+      while (! scanner.hasNextInt()) {
+        scanner.nextLine();
+        this.print();
+      }
+      int age = scanner.nextInt();
+      if (age < 5 || age > 100) {
+        System.out.println("Error! Age must be between 5 and 100 inclusive.");
+        return this.ask(scanner);
+      }
+      input = age;
     }
 
     else if (type.equals("gender")) {
@@ -59,7 +72,7 @@ public class Question {
       input = text.charAt(0);
       if (input != 'm' && input != 'f') {
         System.out.println("Error! Please enter 'm' or 'f'.");
-        return this.ask(length, scanner);
+        return this.ask(scanner);
       }
     }
 
@@ -76,23 +89,13 @@ public class Question {
         input = false;
       } else {
         System.out.println("Error! Please enter 'y' or 'n'.");
-        return this.ask(length, scanner);
+        return this.ask(scanner);
       }
     }
 
     return input;
 
   }
-
-  /**
-   * Ask question
-   * @param scanner
-   * @return Object
-   */
-  public Object ask (Scanner scanner) {
-    return this.ask(text.length(), scanner);
-  }
-
 
   /**
    * Get text
@@ -131,11 +134,29 @@ public class Question {
   }
 
   /**
+   * Get length
+   * @return length
+   */
+
+  public int getLength () {
+    return this.length;
+  }
+
+  /**
+   * Set length
+   * @param length
+   */
+
+  public void setLength (int length) {
+    this.length = length;
+  }
+
+  /**
    * Print the question
    */
 
   private void print () {
-    System.out.printf("%-" + length + "s ", text);
+    System.out.printf("%-" + this.length + "s ", text);
   }
 
 }
